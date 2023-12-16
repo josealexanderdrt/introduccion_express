@@ -1,10 +1,12 @@
-import fs  from "fs";
+import fs from "fs";
 import express from "express";
 import cors from "cors";
 import morgan from "morgan";
-import {fileURLToPath} from "url";
-import {dirname} from "path"
-const __filename = fileURLToPath(import.meta.url)
+import { fileURLToPath } from "url";
+import { dirname } from "path";
+import { v4 as uuidv4 } from "uuid";
+
+const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 /* const fs = require("fs");
@@ -19,7 +21,7 @@ import fs from "fs";
  */
 
 const app = express();
-const PORT = 3000;
+const PORT = 3001;
 app.use(cors());
 app.use(morgan("dev"));
 app.use(express.json());
@@ -47,15 +49,24 @@ app.post("/canciones", (req, res) => {
   try {
     const cancion = req.body;
     console.log(cancion);
-    if (Object.values(cancion).some((value) => value === "")) {
-      return res.status(400).json({ message: "Falta datos por completar" });
+
+    if (!cancion.titulo || !cancion.artista || !cancion.tono) {
+      res.status(400).json({ mensaje: "Tiene que ingresar todo los campos" });
+      return;
     }
+    const id = uuidv4();
+    const idBody = {
+      id,
+      ...cancion,
+    };
+
     const canciones = JSON.parse(fs.readFileSync("repertorio.json", "utf8"));
-    canciones.push(cancion);
+
+    canciones.push(idBody);
     fs.writeFileSync("repertorio.json", JSON.stringify(canciones));
-    res.send("Cancion agregada exitosamente");
+    res.status(201).send("Cancion agregada exitosamente");
   } catch (error) {
-    res.json({ message: "El recurso no esta disponible" });
+    res.status(500).json({ message: "El recurso no esta disponible" });
   }
 });
 
