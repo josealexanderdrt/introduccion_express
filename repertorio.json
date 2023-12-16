@@ -1,30 +1,13 @@
 [
     {
+        "id": "d79d4664-7b15-4c6a-9f06-743320675b02",
         "titulo": "Fotografias",
         "artista": "Juanes",
         "tono": "pop"
     },
     {
-        "titulo": "La camisa Negra",
-        "artista": "Juanes",
-        "tono": "pop",
-        "id": "6f442af4-d02e-4ad3-8c11-cd7fe937cdb9"
-    },
-    {
-        "id": "045ca369-9e65-428e-9c90-cf102563e34d",
-        "titulo": "Hola",
-        "artista": "Juanes",
-        "tono": "pop"
-    },
-    {
-        "id": "525efc61-d1bb-48be-9335-a7a0dd64c2f5",
-        "titulo": "Hola",
-        "artista": "Juanes",
-        "tono": "pop"
-    },
-    {
-        "id": "45158b42-6c0f-4d19-b4f2-0da5b08712da",
-        "titulo": "La camisa 2",
+        "id": "26a4528a-35aa-40c0-85c6-faf79a4ccb51",
+        "titulo": "La vaina esa",
         "artista": "Juanes",
         "tono": "pop"
     }

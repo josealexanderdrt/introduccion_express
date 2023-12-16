@@ -1,51 +1,31 @@
+import { v4 as uuidv4 } from "uuid";
 import fs from "fs";
-import express from "express";
-import cors from "cors";
-import morgan from "morgan";
 import { fileURLToPath } from "url";
 import { dirname } from "path";
-import { v4 as uuidv4 } from "uuid";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-/* const fs = require("fs");
-const express = require("express");
-const morgan = require("morgan");
-const cors = require("cors");
- */
-/* import express from "express";
-import cors from "cors";
-import morgan from "morgan";
-import fs from "fs";
- */
-
-const app = express();
-const PORT = 3001;
-app.use(cors());
-app.use(morgan("dev"));
-app.use(express.json());
-
-app.get("/", (req, res) => {
+const getPahtHtml = (req, res) => {
   try {
-    res.sendFile(__dirname + "/index.html");
+    res.sendFile(__dirname + "\index.html\src\controllers");
   } catch (error) {
-    res.status(400).json({ error: "Error solicitud no procesada " });
-    console.error("Error al procesar la solicitud", error);
+    res.status(500).json({ error: "Error solicitud no procesada " });
+    console.error("Error del servidor  al procesar la solicitud", error);
   }
-});
+};
 
-app.get("/canciones", (req, res) => {
+const getAllCanciones = (req, res) => {
   try {
     const canciones = JSON.parse(fs.readFileSync("repertorio.json", "utf-8"));
     res.status(200).json(canciones);
   } catch (error) {
-    res.status(400).json({ error: "Error al procesar la solicitud" });
-    console.error("Error al procesar la solicitud", error);
+    res.status(500).json({ error: "Error al procesar la solicitud" });
+    console.error("El cliente ingreso una ruta no valida", error);
   }
-});
+};
 
-app.post("/canciones", (req, res) => {
+const createSong = (req, res) => {
   try {
     const cancion = req.body;
     console.log(cancion);
@@ -68,23 +48,28 @@ app.post("/canciones", (req, res) => {
   } catch (error) {
     res.status(500).json({ message: "El recurso no esta disponible" });
   }
-});
+};
 
-app.put("/canciones/:id", (req, res) => {
+const editSong = (req, res) => {
   try {
     const { id } = req.params;
     const cancion = req.body;
     const canciones = JSON.parse(fs.readFileSync("repertorio.json"));
     const index = canciones.findIndex((c) => c.id === id);
     canciones[index] = cancion;
-    fs.writeFileSync("repertorio.json", JSON.stringify(canciones));
-    res.send("Cancion Agregada");
-  } catch (error) {
-    res.json({ message: "La cancion no fue agregada" });
-  }
-});
 
-app.delete("/canciones/:id", (req, res) => {
+    fs.writeFileSync("repertorio.json", JSON.stringify(canciones));
+    res.status(201).send("Cancion Editada");
+    if (!cancion.titulo || !cancion.artista || !cancion.tono) {
+      res.status(400).json({ mensaje: "Tiene que ingresar al menos un campo" });
+      return;
+    }
+  } catch (error) {
+    res.status(500).json({ message: "La cancion no fue agregada" });
+  }
+};
+
+const removeSong = (req, res) => {
   try {
     const { id } = req.params;
     const canciones = JSON.parse(fs.readFileSync("repertorio.json"));
@@ -93,10 +78,8 @@ app.delete("/canciones/:id", (req, res) => {
     fs.writeFileSync("repertorio.json", JSON.stringify(canciones));
     res.send("Cancion Eliminado con exito");
   } catch (error) {
-    res.json({ message: "No se pudo eliminar" });
+    res.status(500).json({ message: "No se pudo eliminar" });
   }
-});
+};
 
-app.listen(PORT, () => {
-  console.log(`Server is running on port http://localhost:${PORT}`);
-});
+export { getPahtHtml, getAllCanciones, createSong, editSong, removeSong };
