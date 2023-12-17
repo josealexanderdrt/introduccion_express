@@ -1,19 +1,28 @@
 import { v4 as uuidv4 } from "uuid";
 import fs from "fs";
-import { fileURLToPath } from "url";
-import { dirname } from "path";
 
-const __filename = fileURLToPath(import.meta.url);
+
+/* import { fileURLToPath } from "url";
+import { dirname } from "path";
+ */
+
+/* const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-const getPahtHtml = (req, res) => {
+/* const getPahtHtml = (req, res) => {
   try {
-    res.sendFile(__dirname + "\index.html\src\controllers");
+    res.sendFile(__dirname + "/index.html");
   } catch (error) {
     res.status(500).json({ error: "Error solicitud no procesada " });
     console.error("Error del servidor  al procesar la solicitud", error);
   }
-};
+}; 
+
+Dudas
+Este metodo no funciono.
+
+
+*/ 
 
 const getAllCanciones = (req, res) => {
   try {
@@ -82,4 +91,5 @@ const removeSong = (req, res) => {
   }
 };
 
-export { getPahtHtml, getAllCanciones, createSong, editSong, removeSong };
+export {getAllCanciones, createSong, editSong, removeSong };
+// intentamos exportar getPahtHtml  pero este metodo no funciono 

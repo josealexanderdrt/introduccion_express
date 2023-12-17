@@ -1,9 +1,11 @@
 import express  from "express";
-import { getPahtHtml, getAllCanciones,createSong, editSong, removeSong } from "../src/controllers/cancionesController.js";
+import { getAllCanciones,createSong, editSong, removeSong } from "../src/controllers/cancionesController.js";
 const router = express.Router();
 
 
-router.get('/', getPahtHtml );
+/* router.get('/', getPahtHtml ); 
+Este metodo no funciono 
+*/
 
 router.get('/canciones', getAllCanciones );
 
